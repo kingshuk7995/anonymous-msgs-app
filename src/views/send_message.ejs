@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Send Anonymous Message</title>
+  <style>
+    * {
+      margin: 9px;
+      padding: 0px;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #11065a;
+      padding: 30px 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h1 {
+      color: aqua;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+      margin-bottom: 10px;
+      animation: glow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #0ff, 0 0 10px #0ff; }
+      to { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff; }
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      margin-top: 20px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #1e1e1e;
+      color: white;
+      font-size: 16px;
+      resize: none;
+      box-shadow: inset 0 0 5px rgba(0, 255, 255, 0.3);
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #00aa00;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #00cc00;
+      transform: scale(1.05);
+    }
+
+    .link-home {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .link-home a {
+      color: aqua;
+      text-decoration: underline;
+      font-size: 14px;
+    }
+
+    .msg-success {
+      margin-top: 15px;
+      color: #00ff88;
+      font-size: 16px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Send a message to <%= user.name %></h1>
+
+    <textarea id="message" placeholder="Write your message here..."></textarea>
+    <button class="btn" onclick="sendMessage()">Send</button>
+
+    <p class="msg-success" id="success-msg">Message sent successfully!</p>
+    <div class="link-home" id="home-link">
+      <a href="/">Return to Home</a>
+    </div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const msg = document.getElementById("message").value.trim();
+      if (!msg) {
+        alert("Please enter a message.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/messages/<%= user._id %>`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: msg })
+        });
+
+        if (!response.ok) throw new Error("Server error");
+
+        document.getElementById("message").value = "";
+        document.getElementById("success-msg").style.display = "block";
+        document.getElementById("home-link").style.display = "block";
+      } catch (err) {
+        console.error("Error:", err);
+        alert("Something went wrong!");
+      }
+    }
+  </script>
+</body>
+</html>
