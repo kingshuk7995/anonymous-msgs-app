@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login</title>
+  <title>Sign Up</title>
   <style>
     * {
       margin: 9px;
@@ -72,13 +72,14 @@
 </head>
 <body>
   <div class="container">
-    <h1>Login</h1>
-    <form action="/login" method="POST">
-      <input type="text" name="name" placeholder="Your name" required />
-      <input type="password" name="password" placeholder="Your password" required />
-      <button class="btn" type="submit">Login</button>
+    <h1>Sign Up</h1>
+    <form action="/user/signup" method="POST">
+      <input type="text" name="name" placeholder="Enter your name" required />
+      <input type="text" name="username" placeholder="Enter your username" required />
+      <input type="password" name="password" placeholder="Choose a password" required />
+      <button class="btn" type="submit">Create Account</button>
     </form>
-    <a class="link" href="/signup">Don't have an account? Sign up</a>
+    <a class="link" href="/login">Already have an account? Log in</a>
   </div>
 </body>
 </html>
